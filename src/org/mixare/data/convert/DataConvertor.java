@@ -104,6 +104,7 @@ public class DataConvertor {
 		dataProcessors.add(new TwitterDataProcessor());
 		dataProcessors.add(new OsmDataProcessor());
 		dataProcessors.add(new PanoramioDataProcessor());
+		
 	}
 	
 	public static String getOSMBoundingBox(double lat, double lon, double radius) {

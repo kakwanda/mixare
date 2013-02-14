@@ -48,7 +48,7 @@ public class ArenaProcessor extends PluginDataProcessor {
 
 	@Override
 	public String[] getDataMatch() {
-		String[] str = { "arena" };
+		String[] str = { "object_url" };
 		return str;
 	}
 
