@@ -28,6 +28,7 @@ import org.mixare.lib.render.MixVector;
 import org.mixare.lib.marker.draw.DrawImage;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -98,7 +99,8 @@ public class ImageMarker extends LocalMarker {
 		try {
 			
 			final java.net.URL imageURI = new java.net.URL (ImageUrl);
-			this.setImage(BitmapFactory.decodeStream(imageURI.openConnection().getInputStream()));
+			Bitmap image = BitmapFactory.decodeStream(imageURI.openConnection().getInputStream());
+			this.setImage(Bitmap.createScaledBitmap(image, 90, 90, true));
 			
 		}  catch (MalformedURLException e) {
 			Log.e("Mixare - local ImageMarker", e.getMessage());
@@ -127,7 +129,7 @@ public class ImageMarker extends LocalMarker {
 	 * 
 	 * @param PaintScreen View Screen that title screen will be drawn into
 	 */
-	public void drawTitle(final PaintScreen dw) {
+/*	public void drawTitle(final PaintScreen dw) {
 		if (isVisible) {
 			final float maxHeight = Math.round(dw.getHeight() / 10f) + 1;
 			String textStr = MixUtils.shortenTitle(title,distance);
@@ -142,7 +144,43 @@ public class ImageMarker extends LocalMarker {
 			dw.paintObj(txtLab, getSignMarker().x - txtLab.getWidth() / 2,
 					getSignMarker().y + maxHeight, currentAngle + 90, 1);
 		}
+	}*/
+	
+	
+	
+	public void drawTitle(PaintScreen dw) {
+		float maxHeight = Math.round(dw.getHeight() / 10f) + 1;
+		
+		String textStr = "";
+
+			textStr = getTitle() + "(" + MixUtils.formatDist((float) this.distance) + ")";
+	
+		
+		textBlock = new TextObj(textStr, Math.round(maxHeight / 2f) + 1, 250,
+				dw, isUnderline());
+
+		if (isVisible) {
+			// based on the distance set the colour
+			if (this.distance < 100.0) {
+				textBlock.setBgColor(Color.argb(128, 52, 52, 52));
+				textBlock.setBorderColor(Color.rgb(255, 104, 91));
+			} else {
+				textBlock.setBgColor(Color.argb(128, 0, 0, 0));
+				textBlock.setBorderColor(Color.rgb(255, 255, 255));
+			}
+			//dw.setColor(DataSource.getColor(type));
+
+			float currentAngle = MixUtils.getAngle(cMarker.x, cMarker.y,
+					signMarker.x, signMarker.y);
+			txtLab.prepare(textBlock);
+			dw.setStrokeWidth(1f);
+			dw.setFill(true);
+			dw.paintObj(txtLab, signMarker.x - txtLab.getWidth() / 2,
+					signMarker.y + maxHeight, currentAngle + 90, 1);
+
+		}
 	}
+	
 	
 	/**
 	 * Handles Drawing Images

@@ -142,14 +142,18 @@ public abstract class LocalMarker implements Marker {
 	}
 
 	public void update(Location curGPSFix) {
-		// Checks if programm should get Altitude from http://api.geonames.org/astergdem
+		// Checks if program should get Altitude from http://api.geonames.org/astergdem
 		String type = this.getClass().getName();
 		if (POIMarker.class.getName() == type) {
 			// Set direction Marker to user height
 			if (((POIMarker) this).isDirectionMarker()) {
 				getmGeoLoc().setAltitude(curGPSFix.getAltitude());
 			}
-		} else if (type == NavigationMarker.class.getName()) {
+		} 
+		else if(type == ImageMarker.class.getName()){
+			getmGeoLoc().setAltitude(curGPSFix.getAltitude());
+		}
+		else if (type == NavigationMarker.class.getName()) {
 			getmGeoLoc().setAltitude(curGPSFix.getAltitude());
 		} else if (type != NavigationMarker.class.getName()) {
 			if (this.getURL() != null && this.getmGeoLoc().getAltitude() == 0.0) {
